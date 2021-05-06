@@ -1,9 +1,10 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "anystring"
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
 responses = []
@@ -23,6 +24,8 @@ def get_homepage():
 def show_question(question_index):
     """passes along the survey question based on the index"""
     if question_index != len(responses):
+        flash(
+            "You are trying to acces an invalid question. Please answer the question below.")
         return redirect(f"/question/{len(responses)}")
 
     question = satisfaction_survey.questions[question_index]
