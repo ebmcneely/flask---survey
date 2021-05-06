@@ -22,6 +22,8 @@ def get_homepage():
 @app.route('/question/<int:question_index>')
 def show_question(question_index):
     """passes along the survey question based on the index"""
+    if question_index != len(responses):
+        return redirect(f"/question/{len(responses)}")
 
     question = satisfaction_survey.questions[question_index]
     return render_template('question.html', question=question)
