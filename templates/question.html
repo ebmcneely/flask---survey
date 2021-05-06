@@ -6,9 +6,10 @@
 <h1>{{question.question}}</h1>
 <form action="/answer" method='POST'>
     {% for choice in question.choices %}
-    <input type="radio" name="answer" value={{choice}}>
+    <input type="radio" name="answer" value={{choice}} required>
     <label for="">{{choice}}</label>
     {% endfor %}
+    <p></p>
     <button>Next Question</button>
 </form>
 {% endblock %}

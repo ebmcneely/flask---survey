@@ -10,38 +10,38 @@ responses = []
 
 
 @app.route('/')
-"""starting page route"""
-
-# When homepage url is entered this view function passes along the survey title and instructions
-
-
 def get_homepage():
+    """passes along the survey title and the instructions"""
+
+    responses.clear()
     title = satisfaction_survey.title
     instructions = satisfaction_survey.instructions
     return render_template('start-page.html', title=title, instructions=instructions)
 
 
 @app.route('/question/<int:question_index>')
-"""question page route based on the question index"""
-
-# This function passes along a survey question based on the index
-
-
 def show_question(question_index):
+    """passes along the survey question based on the index"""
+
     question = satisfaction_survey.questions[question_index]
     return render_template('question.html', question=question)
 
 
 @app.route('/answer', methods=["POST"])
-"""This route receives the selection made for each question"""
-
-# This function records the selection and redirects to either the next question or the end
-
-
 def get_answer():
+    """records the selection and redirects to the next question or to the end"""
+
     selection = request.form['answer']
     responses.append(selection)
     if (len(responses) == len(satisfaction_survey.questions)):
-        return redirect('/finished')
+        return redirect('/end')
     else:
         return redirect(f"/question/{len(responses)}")
+
+
+@app.route('/end')
+def go_to_end():
+    """sends user to the end page"""
+
+    responses = []
+    return render_template('end.html')
